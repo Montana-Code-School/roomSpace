@@ -1,0 +1,32 @@
+{
+  "name": "roomspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev:client": "webpack --config webpack.config.client.js --watch",
+    "dev:server": "webpack --config webpack.config.server.js --watch",
+    "dev:start": "nodemon dist/server.js --watch dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Montana-Code-School/roomSpace.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "webpack": "^2.4.1"
+  },
+  "dependencies": {
+    "d3": "^4.9.1",
+    "express": "^4.15.2",
+    "rickshaw": "^1.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/Montana-Code-School/roomSpace/issues"
+  },
+  "homepage": "https://github.com/Montana-Code-School/roomSpace#readme"
+}
