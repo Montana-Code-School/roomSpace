@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import RoomSpace from './roomspace'
+import Test from './test'
 
-ReactDOM.render(<RoomSpace />, document.getElementById('chart'));
+ReactDOM.render(<Test />, document.getElementById('app'));

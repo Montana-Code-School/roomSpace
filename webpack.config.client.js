@@ -6,7 +6,7 @@ module.exports = {
     context: srcPath,
     target: 'web',
 
-    entry: './public/js/script.js',
+    entry: './app/app.js',
     output: {
         path: srcPath,
         filename: './public/js/bundle.js',
@@ -20,7 +20,11 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                options: {
+                  presets:
+                      ['es2015', 'react']
+                }
             }
         ]
     },
