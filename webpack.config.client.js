@@ -6,7 +6,7 @@ module.exports = {
     context: srcPath,
     target: 'web',
 
-    entry: './app/app.js',
+    entry: './public/js/script.js',
     output: {
         path: srcPath,
         filename: './public/js/bundle.js',
@@ -25,6 +25,10 @@ module.exports = {
                   presets:
                       ['es2015', 'react']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: [ 'style-loader', 'css-loader' ]
             }
         ]
     },
