@@ -1,0 +1,46 @@
+body {
+  background: url("../img/background1.png");
+}
+.main {
+width: 80%;
+margin: auto;
+}
+
+h1 {
+  font-size: 30px;
+  color: 405559;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.tablink {
+    background-color: #8e8e8e;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
+.defaultTab {
+    display: block;
+}
+
+.tablink:hover {
+    background-color: #adadad;
+}
+
+.tabcontent {
+    color: white;
+    display: none;
+    padding: 50px;
+    text-align: center;
+}
+
+#graph1 {background-color: #e8aa64;}
+#graph2 {background-color:#e8aa82;}
+#graph3 {background-color:#e8aaa0;}
+#graph4 {background-color:#e8aabe;}
