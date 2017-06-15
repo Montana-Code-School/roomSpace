@@ -2,21 +2,59 @@ body {
   background: url("../img/background1.png");
 }
 .main {
-width: 80%;
-margin: auto;
+  width: 80%;
+  margin: auto;
+  font-family: 'Lato', sans-serif;
 }
 
 h1 {
-  font-size: 30px;
-  color: 405559;
+  font-size: 50px;
+  color: black;
+  background-color: #666;
   font-weight: bold;
   text-align: center;
+  font-family: 'Julius Sans One', sans-serif;
 }
 
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: yellow;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.bar rect {
+  fill: steelblue;
+}
+.bar text {
+  fill: #fff;
+  font: 10px sans-serif;
+}
+
+.hexagon {
+  stroke: #000;
+  stroke-width: 0.5px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.area {
+  fill: steelblue;
+  stroke-width: 0px;
+}
 
 .tablink {
-    background-color: #8e8e8e;
-    color: white;
+    background-color: #999;
+    color: black;
     float: left;
     border: none;
     outline: none;
@@ -30,17 +68,17 @@ h1 {
 }
 
 .tablink:hover {
-    background-color: #adadad;
+    background-color: #ccc;
 }
 
 .tabcontent {
-    color: white;
+    color: black;
     display: none;
     padding: 50px;
     text-align: center;
 }
 
-#graph1 {background-color: #e8aa64;}
-#graph2 {background-color:#e8aa82;}
-#graph3 {background-color:#e8aaa0;}
-#graph4 {background-color:#e8aabe;}
+#graph1 {background-color: #d1b9ad;}
+#graph2 {background-color:#d1b9bd;}
+#graph3 {background-color:#d1b9cd;}
+#graph4 {background-color:#d1b9dd;}

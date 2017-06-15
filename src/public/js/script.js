@@ -10,6 +10,7 @@ function openTab(graphName) {
   document.getElementById(graphName).style.display = "block";
     }
 
+
 var chartData = [10,20,30,40,50,60,70,80];
 
 var height = 200,
