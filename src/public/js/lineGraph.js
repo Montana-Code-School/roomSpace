@@ -16,19 +16,19 @@ var y = d3.scaleLinear().range([height, 0]);
 //define the area
 var area = d3.area()
     .x(function(d) {
-      return x(d.time);
+      return x(d.Time);
     })
     .y0(height)
     .y1(function(d) {
-      return y(d.total);
+      return y(d.Total);
     });
 // define the line
 var valueline = d3.line()
   .x(function(d) {
-    return x(d.time);
+    return x(d.Time);
   })
   .y(function(d) {
-    return y(d.total);
+    return y(d.Total);
   });
 var div = d3.select("body").append("div")
   .attr("class", "tooltip")
@@ -47,30 +47,40 @@ d3.csv("doc/data.csv", function(error, data) {
   if (error) throw error;
   // format the data
   data.forEach(function(d) {
-    d.time = parseTime(d.time);
-    d.total = +d.total;
+    d.Time = parseTime(d.Time);
+    d.Total = +d.Total;
   });
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) {
-    return d.time
+    return d.Time
   }));
   y.domain([0, d3.max(data, function(d) {
-    return d.total;
+    return d.Total;
   })]);
   svg.append("path")
     .data([data])
     .attr("class", "area")
     .attr("d", area);
+  //nest the entries by symbol
+  var dataNest = d3.nest()
+    .key(function(d) {return d.Date;})
+    .entries(data);
+  //Loop through each symbol/key
+  dataNest.forEach(function(d) {
+      svg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(d.values));
+  });
   //add the area
-  svg.append("path")
-    .data([data])
-    .attr("class", "area")
-    .attr("d", area);
+  // svg.append("path")
+  //   .data([data])
+  //   .attr("class", "area")
+  //   .attr("d", area);
   // Add the valueline path
-  svg.append("path")
-    .data([data])
-    .attr("class", "line")
-    .attr("d", valueline);
+  // svg.append("path")
+  //   .data([data])
+  //   .attr("class", "line")
+  //   .attr("d", valueline);
   //add the dots with tooltip
     svg.selectAll("dot")
       .data(data)
@@ -78,20 +88,25 @@ d3.csv("doc/data.csv", function(error, data) {
       .style("fill", "blue")
       .attr("r", 4)
       .attr("cx", function(d) {
-        return x(d.time);
+        return x(d.Time);
       })
       .attr("cy", function(d) {
-        return y(d.total);
+        return y(d.Total);
       })
-      .on("mouseover", function(d) {
+      .on("mouseenter", function(d) {
         div.transition()
-          .duration(200)
-          .style("opacity", .8);
+          .duration(1)
+          .style("opacity", .8)
         div.html(
-            formatTime(d.time) + "<br/>" + d.total)
+            d.Date + "<br/>" + formatTime(d.Time) + "<br/>" + "Total: " + d.Total)
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
       });
+      // .onmouseleave = function() {
+      //
+      // };
+
+
   // Add the X Axis
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")

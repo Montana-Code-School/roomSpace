@@ -20,7 +20,7 @@ div.tooltip {
   position: absolute;
   text-align: center;
   width: 60px;
-  height: 28px;
+  height: 60px;
   padding: 2px;
   font: 12px sans-serif;
   background: yellow;
@@ -48,7 +48,7 @@ div.tooltip {
 }
 
 .area {
-  fill: steelblue;
+  fill: none;
   stroke-width: 0px;
 }
 
