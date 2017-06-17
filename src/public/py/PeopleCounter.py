@@ -9,7 +9,7 @@ import csv
 with open('../doc/data.csv', 'rb') as f:
     reader = csv.reader(f)
 writer = csv.writer(open('../doc/data.csv', 'w'))
-writer.writerow(["time", "total"])
+writer.writerow(["Date", "Time", "enterExit", "Total"])
 
 #Input and Output Counters
 cnt_up   = 0
@@ -18,7 +18,7 @@ total = 0
 
 #Video Source
 #cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('peopleCounter.avi')
+cap = cv2.VideoCapture('IMG_0868.MOV')
 
 #Video Properties
 ##cap.set(3,160) #Width
@@ -31,7 +31,7 @@ for i in range(19):
 w = cap.get(3)
 h = cap.get(4)
 frameArea = h*w
-areaTH = frameArea/250
+areaTH = frameArea/20 #originally 250
 print 'Area Threshold', areaTH
 
 #Input/Output lines
@@ -63,7 +63,7 @@ pt8 =  [w, down_limit];
 pts_L4 = np.array([pt7,pt8], np.int32)
 pts_L4 = pts_L4.reshape((-1,1,2))
 
-#Background Subtractor
+#Background Subtractor (originally True)
 fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
 
 #Structural elements for morphogic filters
@@ -88,7 +88,7 @@ while(cap.isOpened()):
     #########################
     #    PRE-PROCESSING     #
     #########################
-    
+
     #Apply subtraction of background
     fgmask = fgbg.apply(frame)
     fgmask2 = fgbg.apply(frame)
@@ -111,7 +111,7 @@ while(cap.isOpened()):
     #################
     #    CONTOURS   #
     #################
-    
+
     # RETR_EXTERNAL returns only extreme outer flags. All child contours are left behind.
     _, contours0, hierarchy = cv2.findContours(mask2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     for cnt in contours0:
@@ -120,9 +120,9 @@ while(cap.isOpened()):
             #################
             #   TRACKING    #
             #################
-            
+
             #Missing add conditions for multipersons, outputs and screen inputs.
-            
+
             M = cv2.moments(cnt)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -138,12 +138,12 @@ while(cap.isOpened()):
                         if i.going_UP(line_down,line_up) == True:
                             cnt_up += 1;
                             total -= 1;
-                            writer.writerow([time.strftime("%a %x %X"),total])
+                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "-1", total])
                             print time.strftime("%a %x %X"),",",total
                         elif i.going_DOWN(line_down,line_up) == True:
                             cnt_down -= 1;
                             total += 1;
-                            writer.writerow([time.strftime("%a %x %X"),total])
+                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "1", total])
                             print time.strftime("%a %x %X"),",",total
                         break
                     if i.getState() == '1':
@@ -159,16 +159,16 @@ while(cap.isOpened()):
                 if new == True:
                     p = Person.MyPerson(pid,cx,cy, max_p_age)
                     persons.append(p)
-                    pid += 1     
+                    pid += 1
             #################
             #   DRAWINGS    #
             #################
             cv2.circle(frame,(cx,cy), 5, (0,0,255), -1)
-            img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)            
+            img = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
             #cv2.drawContours(frame, cnt, -1, (0,255,0), 3)
-            
+
     #END for cnt in contours0
-            
+
     #########################
     # DRAWING TRAJECTORIES  #
     #########################
@@ -180,7 +180,7 @@ while(cap.isOpened()):
 ##        if i.getId() == 9:
 ##            print str(i.getX()), ',', str(i.getY())
         cv2.putText(frame, str(i.getId()),(i.getX(),i.getY()),font,0.3,i.getRGB(),1,cv2.LINE_AA)
-        
+
     #################
     #    IMAGES     #
     #################
@@ -196,14 +196,14 @@ while(cap.isOpened()):
     cv2.putText(frame, str_down ,(10,90),font,0.5,(255,0,0),1,cv2.LINE_AA)
 
     cv2.imshow('Frame',frame)
-    #cv2.imshow('Mask',mask)    
-    
+    #cv2.imshow('Mask',mask)
+
     #Pre-set ESC to exit
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break
 #END while(cap.isOpened())
-    
+
 #################
 #   CLEANING    #
 #################
