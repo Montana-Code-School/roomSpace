@@ -8,8 +8,8 @@ var margin = {
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 // parse the time
-var parseTime = d3.timeParse("%-I:%M:%S %p");
-var formatTime = d3.timeFormat("%H:%M %p");
+var parseTime = d3.timeParse("%-H:%M:%S");
+var formatTime = d3.timeFormat("%I:%M %p");
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
