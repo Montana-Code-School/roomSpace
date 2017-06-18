@@ -1,6 +1,7 @@
 body {
   background: url("../img/background1.png");
 }
+
 .main {
   width: 80%;
   margin: auto;
@@ -14,42 +15,7 @@ h1 {
   font-weight: bold;
   text-align: center;
   font-family: 'Julius Sans One', sans-serif;
-}
-
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  width: 60px;
-  height: 60px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: yellow;
-  border: 0px;
-  border-radius: 8px;
-}
-
-.bar rect {
-  fill: steelblue;
-}
-.bar text {
-  fill: #fff;
-  font: 10px sans-serif;
-}
-
-.hexagon {
-  stroke: #000;
-  stroke-width: 0.5px;
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 3px;
-}
-
-.area {
-  fill: none;
-  stroke-width: 0px;
+  opacity: .8;
 }
 
 .tablink {
@@ -63,6 +29,7 @@ div.tooltip {
     font-size: 17px;
     width: 25%;
 }
+
 .defaultTab {
     display: block;
 }
@@ -82,3 +49,32 @@ div.tooltip {
 #graph2 {background-color:#d1b9bd;}
 #graph3 {background-color:#d1b9cd;}
 #graph4 {background-color:#d1b9dd;}
+
+.bar rect {
+  fill: steelblue;
+}
+.bar text {
+  fill: #fff;
+}
+
+.area {
+  fill: none;
+  stroke-width: 0px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: yellow;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.line {
+  fill: none;
+  stroke-width: 3px;
+}

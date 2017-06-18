@@ -14,27 +14,26 @@
     <h1>RoomSpace</h1>
     <div class="main">
         <button class="tablink" onclick="openTab('graph1')" id="defaultOpen">Bar Graph</button>
-        <button class="tablink" onclick="openTab('graph2')">Hex Graph</button>
+        <button class="tablink" onclick="openTab('graph2')">Area Graph</button>
         <button class="tablink" onclick="openTab('graph3')">Line Graph</button>
         <button class="tablink" onclick="openTab('graph4')">Radial Graph</button>
 
         <div id="graph1" class="tabcontent">
           <h3>Bar Graph</h3>
           <svg id=barGraph width="960" height="500"></svg>
-          <script type="text/javascript" src="js/barGraph.js"></script>
+
         </div>
 
         <div id="graph2" class="tabcontent">
-          <h3>Hex Graph</h3>
-          <svg id="hexGraph" width="960" height="500"></svg>
-          <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
-          <script type="text/javascript" src="js/hexGraph.js"></script>
+          <h3>Area Graph</h3>
+          <svg id="areaGraph" width="960" height="500"></svg>
+
         </div>
 
         <div id="graph3" class="tabcontent">
           <h3>Line Graph</h3>
           <svg id="lineGraph" width="960" height="500"></svg>
-          <script type="text/javascript" src="js/lineGraph.js"></script>
+
         </div>
 
         <div id="graph4" class="tabcontent">
@@ -44,6 +43,9 @@
 
       <script type=”text/javascript” src=”../js/d3.layout.min.js”></script>
       <script src="./js/bundle.js" type="text/javascript" ></script>
+      <script type="text/javascript" src="js/barGraph.js"></script>
+      <script type="text/javascript" src="js/areaGraph.js"></script>
+      <script type="text/javascript" src="js/lineGraph.js"></script>
     </div>
   </body>
 </html>

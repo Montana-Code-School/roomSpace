@@ -1,5 +1,4 @@
-function lineGraph() {
-  // set the dimensions and margins of the graph
+function areaGraph() {// set the dimensions and margins of the graph
   var margin = {
       top: 20,
       right: 20,
@@ -29,7 +28,6 @@ function lineGraph() {
 
   // define the lines
   var valueline = d3.line()
-    .curve(d3.curveCardinal)
     .x(function(d) {
       return x(d.Time);
     })
@@ -44,7 +42,7 @@ function lineGraph() {
   // append the svg object to the body of the page
   // appends a 'group' element to 'svg'
   // moves the 'group' element to the top left margin
-  var svg = d3.select("#lineGraph").append("svg")
+  var svg = d3.select("#areaGraph").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -83,33 +81,11 @@ function lineGraph() {
     dataNest.forEach(function(d) {
         svg.append("path")
           .attr("class", "line")
-          .style("fill", "none")
-          .style("stroke", function() {
+          .style("opacity", .5)
+          .style("fill", function() {
             return d.color = color(d.key); })
           .attr("d", valueline(d.values));
     });
-
-    //add the dots with tooltip
-      svg.selectAll("dot")
-        .data(data)
-        .enter().append("circle")
-        .style("fill", "blue")
-        .attr("r", 4)
-        .attr("cx", function(d) {
-          return x(d.Time);
-        })
-        .attr("cy", function(d) {
-          return y(d.Total);
-        })
-        .on("mouseenter", function(d) {
-          div.transition()
-            .duration(1)
-            .style("opacity", .8)
-          div.html(
-              d.Date + "<br/>" + formatTime(d.Time) + "<br/>" + "Total: " + d.Total)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
-        });
 
     // Add the X Axis
     svg.append("g")
@@ -138,4 +114,4 @@ function lineGraph() {
   });
 }
 
-lineGraph();
+areaGraph();
