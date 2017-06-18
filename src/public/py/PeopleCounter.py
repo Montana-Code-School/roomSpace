@@ -18,7 +18,7 @@ total = 0
 
 #Video Source
 #cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('IMG_0868.MOV')
+cap = cv2.VideoCapture('New001.MOV')
 
 #Video Properties
 ##cap.set(3,160) #Width
@@ -31,7 +31,7 @@ for i in range(19):
 w = cap.get(3)
 h = cap.get(4)
 frameArea = h*w
-areaTH = frameArea/20 #originally 250
+areaTH = frameArea/300 #originally 250
 print 'Area Threshold', areaTH
 
 #Input/Output lines
@@ -89,6 +89,11 @@ while(cap.isOpened()):
     #    PRE-PROCESSING     #
     #########################
 
+    #Change contrast to eliminate light swell
+    cv2.imshow('SourceFrame',frame)
+    frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
+    _ ,frame = cv2.threshold(frame,100,210,cv2.THRESH_BINARY)
+
     #Apply subtraction of background
     fgmask = fgbg.apply(frame)
     fgmask2 = fgbg.apply(frame)
@@ -96,13 +101,25 @@ while(cap.isOpened()):
     #Binarization to remove shadows (gray color)
     try:
         ret,imBin= cv2.threshold(fgmask,200,255,cv2.THRESH_BINARY)
-        ret,imBin2 = cv2.threshold(fgmask2,200,255,cv2.THRESH_BINARY)
+        ret,imBin2 = cv2.threshold(fgmask2,50,100,cv2.THRESH_BINARY)
+
+        cv2.imshow('Bin',imBin)
+        cv2.imshow('Bin2',imBin2)
+
         #Opening (erode->dilate) To remove noise.
         mask = cv2.morphologyEx(imBin, cv2.MORPH_OPEN, kernelOp)
         mask2 = cv2.morphologyEx(imBin2, cv2.MORPH_OPEN, kernelOp)
+
         #Closing (dilate -> erode) To join white regions.
         mask =  cv2.morphologyEx(mask , cv2.MORPH_CLOSE, kernelCl)
         mask2 = cv2.morphologyEx(mask2, cv2.MORPH_CLOSE, kernelCl)
+
+        #TEST SHOW
+        cv2.imshow('Mask',mask)
+        cv2.imshow('Mask2',mask2)
+        #TEST SHOW
+
+
     except:
         print('EOF')
         print 'UP:',cnt_up
