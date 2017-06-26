@@ -1,9 +1,12 @@
 ##People Counter
 ##RoomSpace
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import numpy as np
 import cv2
 import Person
-import time
+import time, datetime
+import signal,sys
 import csv
 
 with open('../doc/data.csv', 'rb') as f:
@@ -17,19 +20,15 @@ cnt_down = 0
 total = 0
 
 #Video Source
-#cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('New001.MOV')
-
-#Video Properties
-##cap.set(3,160) #Width
-##cap.set(4,120) #Height
+w = 160
+h = 120
+camera = PiCamera()
+camera.resolution = (w, h)
+camera.framerate = 5
+rawCapture = PiRGBArray(camera, size=(w, h))
+time.sleep(0.1)
 
 #Prints the capture properties to console
-for i in range(19):
-    print i, cap.get(i)
-
-w = cap.get(3)
-h = cap.get(4)
 frameArea = h*w
 areaTH = frameArea/300 #originally 250
 print 'Area Threshold', areaTH
@@ -77,11 +76,11 @@ persons = []
 max_p_age = 5
 pid = 1
 
-while(cap.isOpened()):
-##for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+#while(cap.isOpened()):
+for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     #Read an image of the video source
-    ret, frame = cap.read()
-##    frame = image.array
+    #ret, frame = cap.read()
+    frame = image.array
 
     for i in persons:
         i.age_one() #age every person one frame
@@ -214,6 +213,9 @@ while(cap.isOpened()):
 
     cv2.imshow('Frame',frame)
     #cv2.imshow('Mask',mask)
+
+    #clear the stream in preparation for the next one
+    rawCapture.truncate(0)
 
     #Pre-set ESC to exit
     k = cv2.waitKey(30) & 0xff
