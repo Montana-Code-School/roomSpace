@@ -92,7 +92,7 @@ while(cap.isOpened()):
     #Change contrast to eliminate light swell
     cv2.imshow('SourceFrame',frame)
     frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
-    _ ,frame = cv2.threshold(frame,100,210,cv2.THRESH_BINARY)
+    _ ,frame = cv2.threshold(frame,100,255,cv2.THRESH_BINARY)
 
     #Apply subtraction of background
     fgmask = fgbg.apply(frame)
@@ -101,7 +101,7 @@ while(cap.isOpened()):
     #Binarization to remove shadows (gray color)
     try:
         ret,imBin= cv2.threshold(fgmask,200,255,cv2.THRESH_BINARY)
-        ret,imBin2 = cv2.threshold(fgmask2,50,100,cv2.THRESH_BINARY)
+        ret,imBin2 = cv2.threshold(fgmask2,50,120,cv2.THRESH_BINARY)
 
         cv2.imshow('Bin',imBin)
         cv2.imshow('Bin2',imBin2)
