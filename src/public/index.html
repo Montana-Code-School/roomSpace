@@ -9,6 +9,8 @@
     <script type="text/javascript" src="js/script.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
+
+
   </head>
   <body>
     <h1>RoomSpace</h1>
@@ -38,7 +40,34 @@
 
         <div id="graph4" class="tabcontent">
           <h3>Radial Graph</h3>
-          <p>datadatadatadata</p>
+          <svg id="radialGraph" width="960" height="500"></svg>
+          <script src="js/radar-chart.js"></script>
+
+<script>
+var data = [
+[
+{axis: "strength", value: 13},
+{axis: "intelligence", value: 1},
+{axis: "charisma", value: 8},
+{axis: "dexterity", value: 4},
+{axis: "luck", value: 9}
+],[
+{axis: "strength", value: 3},
+{axis: "intelligence", value: 15},
+{axis: "charisma", value: 4},
+{axis: "dexterity", value: 1},
+{axis: "luck", value: 15}
+],[
+{axis: "strength", value: 5},
+{axis: "intelligence", value: 1},
+{axis: "charisma", value: 16},
+{axis: "dexterity", value: 10},
+{axis: "luck", value: 5}
+]
+];
+
+RadarChart.draw("#chart", data);
+</script>
         </div>
 
       <script type=”text/javascript” src=”../js/d3.layout.min.js”></script>
@@ -46,6 +75,8 @@
       <script type="text/javascript" src="js/barGraph.js"></script>
       <script type="text/javascript" src="js/areaGraph.js"></script>
       <script type="text/javascript" src="js/lineGraph.js"></script>
+      <script type="text/javascript" src="js/radialGraph.js"></script>
+      <script type="text/javascript" src="js/radar-chart.js"></script>
     </div>
   </body>
 </html>

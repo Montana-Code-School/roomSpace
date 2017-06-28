@@ -1,9 +1,12 @@
 ##People Counter
 ##RoomSpace
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import numpy as np
 import cv2
 import Person
-import time
+import time, datetime
+import signal,sys
 import csv
 
 with open('../doc/data.csv', 'rb') as f:
@@ -15,23 +18,20 @@ writer.writerow(["Date", "Time", "enterExit", "Total"])
 cnt_up   = 0
 cnt_down = 0
 total = 0
+area_array = []
 
 #Video Source
-#cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('IMG_0868.MOV')
-
-#Video Properties
-##cap.set(3,160) #Width
-##cap.set(4,120) #Height
+w = 640
+h = 512
+camera = PiCamera()
+camera.resolution = (w, h)
+camera.framerate = 40
+rawCapture = PiRGBArray(camera, size=(w, h))
+time.sleep(0.1)
 
 #Prints the capture properties to console
-for i in range(19):
-    print i, cap.get(i)
-
-w = cap.get(3)
-h = cap.get(4)
 frameArea = h*w
-areaTH = frameArea/20 #originally 250
+areaTH = frameArea/65 #originally 250
 print 'Area Threshold', areaTH
 
 #Input/Output lines
@@ -68,7 +68,6 @@ fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
 
 #Structural elements for morphogic filters
 kernelOp = np.ones((3,3),np.uint8)
-kernelOp2 = np.ones((5,5),np.uint8)
 kernelCl = np.ones((11,11),np.uint8)
 
 #Variables
@@ -77,11 +76,11 @@ persons = []
 max_p_age = 5
 pid = 1
 
-while(cap.isOpened()):
-##for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+#while(cap.isOpened()):
+for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     #Read an image of the video source
-    ret, frame = cap.read()
-##    frame = image.array
+    #ret, frame = cap.read()
+    frame = image.array
 
     for i in persons:
         i.age_one() #age every person one frame
@@ -89,20 +88,24 @@ while(cap.isOpened()):
     #    PRE-PROCESSING     #
     #########################
 
+    #Change contrast to eliminate light swell
+    cv2.imshow('SourceFrame',frame)
+    frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
+    #_ ,frame = cv2.threshold(frame,100,255,cv2.THRESH_BINARY)
+
     #Apply subtraction of background
     fgmask = fgbg.apply(frame)
-    fgmask2 = fgbg.apply(frame)
 
     #Binarization to remove shadows (gray color)
     try:
         ret,imBin= cv2.threshold(fgmask,200,255,cv2.THRESH_BINARY)
-        ret,imBin2 = cv2.threshold(fgmask2,200,255,cv2.THRESH_BINARY)
+
         #Opening (erode->dilate) To remove noise.
         mask = cv2.morphologyEx(imBin, cv2.MORPH_OPEN, kernelOp)
-        mask2 = cv2.morphologyEx(imBin2, cv2.MORPH_OPEN, kernelOp)
+
         #Closing (dilate -> erode) To join white regions.
         mask =  cv2.morphologyEx(mask , cv2.MORPH_CLOSE, kernelCl)
-        mask2 = cv2.morphologyEx(mask2, cv2.MORPH_CLOSE, kernelCl)
+
     except:
         print('EOF')
         print 'UP:',cnt_up
@@ -112,8 +115,10 @@ while(cap.isOpened()):
     #    CONTOURS   #
     #################
 
+
+
     # RETR_EXTERNAL returns only extreme outer flags. All child contours are left behind.
-    _, contours0, hierarchy = cv2.findContours(mask2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    _, contours0, hierarchy = cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     for cnt in contours0:
         area = cv2.contourArea(cnt)
         if area > areaTH:
@@ -140,11 +145,21 @@ while(cap.isOpened()):
                             total -= 1;
                             writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "-1", total])
                             print time.strftime("%a %x %X"),",",total
+                            area_array.append(area)
+                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            areaTH = new_areaTH - 2000
+                            print area
+                            print areaTH
                         elif i.going_DOWN(line_down,line_up) == True:
                             cnt_down -= 1;
                             total += 1;
                             writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "1", total])
                             print time.strftime("%a %x %X"),",",total
+                            area_array.append(area)
+                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            areaTH = new_areaTH - 2000
+                            print area
+                            print areaTH
                         break
                     if i.getState() == '1':
                         if i.getDir() == 'down' and i.getY() > down_limit:
@@ -169,18 +184,6 @@ while(cap.isOpened()):
 
     #END for cnt in contours0
 
-    #########################
-    # DRAWING TRAJECTORIES  #
-    #########################
-    for i in persons:
-##        if len(i.getTracks()) >= 2:
-##            pts = np.array(i.getTracks(), np.int32)
-##            pts = pts.reshape((-1,1,2))
-##            frame = cv2.polylines(frame,[pts],False,i.getRGB())
-##        if i.getId() == 9:
-##            print str(i.getX()), ',', str(i.getY())
-        cv2.putText(frame, str(i.getId()),(i.getX(),i.getY()),font,0.3,i.getRGB(),1,cv2.LINE_AA)
-
     #################
     #    IMAGES     #
     #################
@@ -197,6 +200,9 @@ while(cap.isOpened()):
 
     cv2.imshow('Frame',frame)
     #cv2.imshow('Mask',mask)
+
+    #clear the stream in preparation for the next one
+    rawCapture.truncate(0)
 
     #Pre-set ESC to exit
     k = cv2.waitKey(30) & 0xff

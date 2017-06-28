@@ -101,7 +101,7 @@ function lineGraph() {
         .attr("cy", function(d) {
           return y(d.Total);
         })
-        .on("mouseenter", function(d) {
+        .on("mouseover", function(d) {
           div.transition()
             .duration(1)
             .style("opacity", .8)
@@ -109,7 +109,12 @@ function lineGraph() {
               d.Date + "<br/>" + formatTime(d.Time) + "<br/>" + "Total: " + d.Total)
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
-        });
+        })
+        .on("mouseout", function(d){
+          div.transition()
+          .duration(1)
+          .style("display", "none")});
+
 
     // Add the X Axis
     svg.append("g")

@@ -50,13 +50,6 @@ h1 {
 #graph3 {background-color:#d1b9cd;}
 #graph4 {background-color:#d1b9dd;}
 
-.bar rect {
-  fill: steelblue;
-}
-.bar text {
-  fill: #fff;
-}
-
 .area {
   fill: none;
   stroke-width: 0px;
@@ -77,4 +70,27 @@ div.tooltip {
 .line {
   fill: none;
   stroke-width: 3px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: darkorange;
+}
+
+.axis--x path {
+  display: inline;
+}
+
+.toolTip {
+	position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
 }
