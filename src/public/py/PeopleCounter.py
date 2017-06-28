@@ -18,19 +18,20 @@ writer.writerow(["Date", "Time", "enterExit", "Total"])
 cnt_up   = 0
 cnt_down = 0
 total = 0
+area_array = []
 
 #Video Source
-w = 160
-h = 120
+w = 640
+h = 512
 camera = PiCamera()
 camera.resolution = (w, h)
-camera.framerate = 5
+camera.framerate = 40
 rawCapture = PiRGBArray(camera, size=(w, h))
 time.sleep(0.1)
 
 #Prints the capture properties to console
 frameArea = h*w
-areaTH = frameArea/300 #originally 250
+areaTH = frameArea/65 #originally 250
 print 'Area Threshold', areaTH
 
 #Input/Output lines
@@ -67,7 +68,6 @@ fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows = True)
 
 #Structural elements for morphogic filters
 kernelOp = np.ones((3,3),np.uint8)
-kernelOp2 = np.ones((5,5),np.uint8)
 kernelCl = np.ones((11,11),np.uint8)
 
 #Variables
@@ -91,33 +91,20 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #Change contrast to eliminate light swell
     cv2.imshow('SourceFrame',frame)
     frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
-    _ ,frame = cv2.threshold(frame,100,255,cv2.THRESH_BINARY)
+    #_ ,frame = cv2.threshold(frame,100,255,cv2.THRESH_BINARY)
 
     #Apply subtraction of background
     fgmask = fgbg.apply(frame)
-    fgmask2 = fgbg.apply(frame)
 
     #Binarization to remove shadows (gray color)
     try:
         ret,imBin= cv2.threshold(fgmask,200,255,cv2.THRESH_BINARY)
-        ret,imBin2 = cv2.threshold(fgmask2,50,120,cv2.THRESH_BINARY)
-
-        cv2.imshow('Bin',imBin)
-        cv2.imshow('Bin2',imBin2)
 
         #Opening (erode->dilate) To remove noise.
         mask = cv2.morphologyEx(imBin, cv2.MORPH_OPEN, kernelOp)
-        mask2 = cv2.morphologyEx(imBin2, cv2.MORPH_OPEN, kernelOp)
 
         #Closing (dilate -> erode) To join white regions.
         mask =  cv2.morphologyEx(mask , cv2.MORPH_CLOSE, kernelCl)
-        mask2 = cv2.morphologyEx(mask2, cv2.MORPH_CLOSE, kernelCl)
-
-        #TEST SHOW
-        cv2.imshow('Mask',mask)
-        cv2.imshow('Mask2',mask2)
-        #TEST SHOW
-
 
     except:
         print('EOF')
@@ -128,8 +115,10 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #    CONTOURS   #
     #################
 
+   
+
     # RETR_EXTERNAL returns only extreme outer flags. All child contours are left behind.
-    _, contours0, hierarchy = cv2.findContours(mask2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    _, contours0, hierarchy = cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
     for cnt in contours0:
         area = cv2.contourArea(cnt)
         if area > areaTH:
@@ -156,11 +145,21 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                             total -= 1;
                             writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "-1", total])
                             print time.strftime("%a %x %X"),",",total
+                            area_array.append(area)
+                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            areaTH = new_areaTH - 2000
+                            print area
+                            print areaTH
                         elif i.going_DOWN(line_down,line_up) == True:
                             cnt_down -= 1;
                             total += 1;
                             writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "1", total])
                             print time.strftime("%a %x %X"),",",total
+                            area_array.append(area)
+                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            areaTH = new_areaTH - 2000
+                            print area
+                            print areaTH
                         break
                     if i.getState() == '1':
                         if i.getDir() == 'down' and i.getY() > down_limit:
@@ -184,18 +183,6 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             #cv2.drawContours(frame, cnt, -1, (0,255,0), 3)
 
     #END for cnt in contours0
-
-    #########################
-    # DRAWING TRAJECTORIES  #
-    #########################
-    for i in persons:
-##        if len(i.getTracks()) >= 2:
-##            pts = np.array(i.getTracks(), np.int32)
-##            pts = pts.reshape((-1,1,2))
-##            frame = cv2.polylines(frame,[pts],False,i.getRGB())
-##        if i.getId() == 9:
-##            print str(i.getX()), ',', str(i.getY())
-        cv2.putText(frame, str(i.getId()),(i.getX(),i.getY()),font,0.3,i.getRGB(),1,cv2.LINE_AA)
 
     #################
     #    IMAGES     #
