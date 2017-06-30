@@ -9,10 +9,15 @@ import time, datetime
 import signal,sys
 import csv
 
-with open('../doc/data.csv', 'rb') as f:
-    reader = csv.reader(f)
-writer = csv.writer(open('../doc/data.csv', 'w'))
+# with open('../doc/data.csv', 'rb') as f:
+#     reader = csv.reader(f)
+# writer = csv.writer(open('../doc/data.csv', 'w'))
+# writer.writerow(["Date", "Time", "enterExit", "Total"])
+
+myfile = open('../doc/data.csv', 'wb')
+writer = csv.writer(myfile, delimiter=',', quotechar='"')
 writer.writerow(["Date", "Time", "enterExit", "Total"])
+myfile.flush()
 
 #Input and Output Counters
 cnt_up   = 0
@@ -108,8 +113,8 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     except:
         print('EOF')
-        print 'UP:',cnt_up
-        print 'DOWN:',cnt_down
+        print 'IN:',cnt_up
+        print 'OUT:',cnt_down
         break
     #################
     #    CONTOURS   #
@@ -142,8 +147,9 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         i.updateCoords(cx,cy)   #Update coordinates in the object and resets age
                         if i.going_UP(line_down,line_up) == True:
                             cnt_up += 1;
-                            total -= 1;
-                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "-1", total])
+                            total += 1;
+                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "1", total])
+                            myfile.flush()
                             print time.strftime("%a %x %X"),",",total
                             area_array.append(area)
                             new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
@@ -152,8 +158,9 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                             print areaTH
                         elif i.going_DOWN(line_down,line_up) == True:
                             cnt_down -= 1;
-                            total += 1;
-                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "1", total])
+                            total -= 1;
+                            writer.writerow([time.strftime("%a %x"), time.strftime("%X"), "-1", total])
+                            myfile.flush()
                             print time.strftime("%a %x %X"),",",total
                             area_array.append(area)
                             new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
@@ -187,8 +194,8 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #################
     #    IMAGES     #
     #################
-    str_up = 'UP: '+ str(cnt_up)
-    str_down = 'DOWN: '+ str(cnt_down)
+    str_up = 'IN: '+ str(cnt_up)
+    str_down = 'OUT: '+ str(cnt_down)
     frame = cv2.polylines(frame,[pts_L1],False,line_down_color,thickness=2)
     frame = cv2.polylines(frame,[pts_L2],False,line_up_color,thickness=2)
     frame = cv2.polylines(frame,[pts_L3],False,(255,255,255),thickness=1)

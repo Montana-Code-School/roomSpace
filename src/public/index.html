@@ -15,7 +15,7 @@
   <body>
     <h1>RoomSpace</h1>
     <div class="main">
-        <button class="tablink" onclick="openTab('graph1')" id="defaultOpen">Bar Graph</button>
+        <button class="tablink" onclick="openTab('graph1')">Bar Graph</button>
         <button class="tablink" onclick="openTab('graph2')">Area Graph</button>
         <button class="tablink" onclick="openTab('graph3')">Line Graph</button>
         <button class="tablink" onclick="openTab('graph4')">Radial Graph</button>
@@ -40,34 +40,8 @@
 
         <div id="graph4" class="tabcontent">
           <h3>Radial Graph</h3>
-          <svg id="radialGraph" width="960" height="500"></svg>
-          <script src="js/radar-chart.js"></script>
-
-<script>
-var data = [
-[
-{axis: "strength", value: 13},
-{axis: "intelligence", value: 1},
-{axis: "charisma", value: 8},
-{axis: "dexterity", value: 4},
-{axis: "luck", value: 9}
-],[
-{axis: "strength", value: 3},
-{axis: "intelligence", value: 15},
-{axis: "charisma", value: 4},
-{axis: "dexterity", value: 1},
-{axis: "luck", value: 15}
-],[
-{axis: "strength", value: 5},
-{axis: "intelligence", value: 1},
-{axis: "charisma", value: 16},
-{axis: "dexterity", value: 10},
-{axis: "luck", value: 5}
-]
-];
-
-RadarChart.draw("#chart", data);
-</script>
+          <svg id="radialGraph" width="960" height="700"></svg>
+          <script src="js/radar-chart.js"></script></script>
         </div>
 
       <script type=”text/javascript” src=”../js/d3.layout.min.js”></script>

@@ -34,6 +34,21 @@ function areaGraph() {// set the dimensions and margins of the graph
     .y(function(d) {
       return y(d.Total);
     });
+  var closingLine = d3.line()
+    .x(function() {
+      return x(x)
+    })
+    .y(function(){
+      return y(0)
+    });
+    // .x(function() {
+    //   return x(0)
+    // })
+    // .y(function() {
+    //   return x(0)
+    // })
+
+
 
   var div = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -65,10 +80,7 @@ function areaGraph() {// set the dimensions and margins of the graph
     y.domain([0, d3.max(data, function(d) {
       return d.Total;
     })]);
-    svg.append("path")
-      .data([data])
-      .attr("class", "area")
-      .attr("d", area);
+
 
     //nest the entries by date
     var dataNest = d3.nest()
@@ -80,11 +92,19 @@ function areaGraph() {// set the dimensions and margins of the graph
     //Loop through each date
     dataNest.forEach(function(d) {
         svg.append("path")
-          .attr("class", "line")
+          .data([data])
+          .attr("d", area)
+          .attr("class", "area")
           .style("opacity", .5)
           .style("fill", function() {
             return d.color = color(d.key); })
           .attr("d", valueline(d.values));
+        // svg.append("path")
+        //   .attr("class", "line")
+        //   .style("opacity", .5)
+        //   .style("fill", function() {
+        //     return d.color = color(d.key); })
+        //   .attr("d", closingLine());
     });
 
     // Add the X Axis

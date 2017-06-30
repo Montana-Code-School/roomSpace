@@ -13,8 +13,8 @@ var RadarChart = {
 	 ToRight: 5,
 	 TranslateX: 80,
 	 TranslateY: 30,
-	 ExtraWidthX: 100,
-	 ExtraWidthY: 100,
+	 ExtraWidthX: 200,
+	 ExtraWidthY: 200,
 	 color: d3.scaleOrdinal(d3.schemeCategory10)
 	};
 
@@ -29,7 +29,7 @@ var RadarChart = {
 	var allAxis = (d[0].map(function(i, j){return i.axis}));
 	var total = allAxis.length;
 	var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
-	var Format = d3.format('%');
+	var Format = d3.format('');
 	d3.select(id).select("svg").remove();
 
 	var g = d3.select(id)

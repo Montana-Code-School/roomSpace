@@ -94,3 +94,7 @@ div.tooltip {
   padding: 14px;
   text-align: center;
 }
+
+#radialGraph {
+  margin: auto;
+}
