@@ -120,7 +120,11 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #    CONTOURS   #
     #################
 
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 483517b2bc66e5968d679526aaafd299c7deb7db
 
     # RETR_EXTERNAL returns only extreme outer flags. All child contours are left behind.
     _, contours0, hierarchy = cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)

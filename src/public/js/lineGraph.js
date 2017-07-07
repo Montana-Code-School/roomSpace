@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function lineGraph() {
   // set the dimensions and margins of the graph
   var margin = {
@@ -30,6 +31,25 @@ function lineGraph() {
   // define the lines
   var valueline = d3.line()
     .curve(d3.curveCardinal)
+=======
+// set the dimensions and margins of the graph
+var margin = {
+    top: 20,
+    right: 20,
+    bottom: 30,
+    left: 50
+  },
+  width = 960 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+// parse the time
+var parseTime = d3.timeParse("%-H:%M:%S");
+var formatTime = d3.timeFormat("%I:%M %p");
+// set the ranges
+var x = d3.scaleTime().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+//define the area
+var area = d3.area()
+>>>>>>> 483517b2bc66e5968d679526aaafd299c7deb7db
     .x(function(d) {
       return x(d.Time);
     })
