@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOMSPACE</title>
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Raleway|Lato|Oswald" rel="stylesheet">
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <h1>RoomSpace</h1>
+    <div class="main">
+        <button class="tablink" onclick="openTab('graph1')">Bar Graph</button>
+        <button class="tablink" onclick="openTab('graph2')">Area Graph</button>
+        <button class="tablink" onclick="openTab('graph3')">Line Graph</button>
+        <button class="tablink" onclick="openTab('graph4')">Radial Graph</button>
+
+        <div id="graph1" class="tabcontent">
+          <h3>Bar Graph</h3>
+          <svg id=barGraph width="960" height="500"></svg>
+
+        </div>
+
+        <div id="graph2" class="tabcontent">
+          <h3>Area Graph</h3>
+          <svg id="areaGraph" width="960" height="500"></svg>
+
+        </div>
+
+        <div id="graph3" class="tabcontent">
+          <h3>Line Graph</h3>
+          <svg id="lineGraph" width="960" height="500"></svg>
+
+        </div>
+
+        <div id="graph4" class="tabcontent">
+          <h3>Radial Graph</h3>
+          <svg id="radialGraph" width="960" height="700"></svg>
+          <script src="js/radar-chart.js"></script></script>
+        </div>
+
+      <script type=”text/javascript” src=”../js/d3.layout.min.js”></script>
+      <script src="./js/bundle.js" type="text/javascript" ></script>
+      <script type="text/javascript" src="js/barGraph.js"></script>
+      <script type="text/javascript" src="js/areaGraph.js"></script>
+      <script type="text/javascript" src="js/lineGraph.js"></script>
+      <script type="text/javascript" src="js/radialGraph.js"></script>
+      <script type="text/javascript" src="js/radar-chart.js"></script>
+    </div>
+  </body>
+</html>

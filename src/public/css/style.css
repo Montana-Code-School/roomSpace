@@ -1,0 +1,100 @@
+body {
+  background: url("../img/background1.png");
+}
+
+.main {
+  width: 80%;
+  margin: auto;
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+  font-size: 50px;
+  color: black;
+  background-color: #666;
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Julius Sans One', sans-serif;
+  opacity: .8;
+}
+
+.tablink {
+    background-color: #999;
+    color: black;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
+
+.defaultTab {
+    display: block;
+}
+
+.tablink:hover {
+    background-color: #ccc;
+}
+
+.tabcontent {
+    color: black;
+    display: none;
+    padding: 50px;
+    text-align: center;
+}
+
+#graph1 {background-color: #d1b9ad;}
+#graph2 {background-color:#d1b9bd;}
+#graph3 {background-color:#d1b9cd;}
+#graph4 {background-color:#d1b9dd;}
+
+.area {
+  fill: none;
+  stroke-width: 0px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: yellow;
+  border: 0px;
+  border-radius: 8px;
+}
+
+.line {
+  fill: none;
+  stroke-width: 3px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: darkorange;
+}
+
+.axis--x path {
+  display: inline;
+}
+
+.toolTip {
+	position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 14px;
+  text-align: center;
+}
+
+#radialGraph {
+  margin: auto;
+}
