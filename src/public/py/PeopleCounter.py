@@ -36,7 +36,7 @@ time.sleep(0.1)
 
 #Prints the capture properties to console
 frameArea = h*w
-areaTH = frameArea/65 #originally 250
+areaTH = frameArea/250 #originally 250
 print 'Area Threshold', areaTH
 
 #Input/Output lines
@@ -156,8 +156,8 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                             myfile.flush()
                             print time.strftime("%a %x %X"),",",total
                             area_array.append(area)
-                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
-                            areaTH = new_areaTH - 2000
+                            #new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            #areaTH = new_areaTH - 2000
                             print area
                             print areaTH
                         elif i.going_DOWN(line_down,line_up) == True:
@@ -167,8 +167,8 @@ for image in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                             myfile.flush()
                             print time.strftime("%a %x %X"),",",total
                             area_array.append(area)
-                            new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
-                            areaTH = new_areaTH - 2000
+                            #new_areaTH = reduce(lambda x, y: x + y, area_array) / len(area_array)
+                            #areaTH = new_areaTH - 2000
                             print area
                             print areaTH
                         break
